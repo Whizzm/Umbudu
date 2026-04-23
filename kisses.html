@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>100 Kisses</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background: radial-gradient(circle at top,#0a1f44,#020617);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+overflow:hidden;
+transition:0.6s;
+}
+
+/* star background */
+body::before{
+content:"";
+position:absolute;
+width:200%;
+height:200%;
+background-image:
+radial-gradient(2px 2px at 20% 30%,white,transparent),
+radial-gradient(2px 2px at 80% 70%,white,transparent),
+radial-gradient(1px 1px at 50% 50%,white,transparent),
+radial-gradient(1px 1px at 10% 80%,white,transparent),
+radial-gradient(2px 2px at 90% 20%,white,transparent);
+animation: moveStars 60s linear infinite;
+opacity:0.4;
+}
+
+@keyframes moveStars{
+from{transform:translateY(0);}
+to{transform:translateY(-500px);}
+}
+
+.container{
+text-align:center;
+padding:50px 40px;
+border-radius:25px;
+backdrop-filter: blur(12px);
+background: rgba(255,255,255,0.15);
+box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+}
+
+h2{
+font-weight:600;
+letter-spacing:1px;
+color:#8ab4ff;
+margin-bottom:30px;
+}
+
+button{
+font-size:20px;
+padding:18px 50px;
+border:none;
+border-radius:60px;
+background: linear-gradient(135deg,#4da6ff,#1a75ff);
+color:white;
+cursor:pointer;
+transition:0.2s;
+box-shadow:0 8px 20px rgba(0,100,255,0.35);
+}
+
+button:hover{ transform:scale(1.05); }
+button:active{ transform:scale(0.9); }
+
+.progress{
+width:280px;
+height:12px;
+background:#1e3a6b;
+border-radius:20px;
+margin-top:25px;
+overflow:hidden;
+}
+
+.bar{
+height:100%;
+width:0%;
+background: linear-gradient(90deg,#4da6ff,#80ccff);
+transition:0.25s;
+box-shadow:0 0 12px rgba(100,180,255,0.6);
+}
+
+.message{
+margin-top:15px;
+color:#a8c7ff;
+font-size:14px;
+letter-spacing:0.5px;
+min-height:22px;
+}
+
+.heart{
+position:absolute;
+font-size:22px;
+animation: floatUp 1s forwards;
+}
+
+.kissFall{
+position:absolute;
+font-size:22px;
+animation: fallDown 1s forwards;
+}
+
+.confetti{
+position:absolute;
+font-size:20px;
+animation: confetti 1.4s forwards;
+}
+
+@keyframes floatUp{
+from{ transform: translateY(0); opacity:1; }
+to{ transform: translateY(-120px); opacity:0; }
+}
+
+@keyframes fallDown{
+from{ transform: translateY(-40px); opacity:1; }
+to{ transform: translateY(140px); opacity:0; }
+}
+
+@keyframes confetti{
+from{
+transform: translateY(0) scale(1);
+opacity:1;
+}
+to{
+transform: translateY(-160px) scale(0.4);
+opacity:0;
+}
+}
+
+@keyframes shake{
+0%{transform:translate(0,0);}
+25%{transform:translate(-6px,4px);}
+50%{transform:translate(6px,-4px);}
+75%{transform:translate(-4px,2px);}
+100%{transform:translate(0,0);}
+}
+
+.shake{ animation: shake 0.3s; }
+
+</style>
+</head>
+
+<body>
+
+<div class="container" id="screen">
+
+<h2>Don't stop kissing</h2>
+
+<button onclick="kiss()" id="kissBtn">
+💋 0 / 100
+</button>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
+<div class="message" id="msg"></div>
+
+</div>
+
+<audio id="sound">
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9b6f9a0c3d.mp3">
+</audio>
+
+<script>
+
+let count = 0;
+let max = 100;
+let lastClickTime = Date.now();
+
+function kiss(){
+
+lastClickTime = Date.now();
+
+if(count>=95){
+prankEffect();
+}else{
+count++;
+}
+
+updateUI();
+midCaptions();
+
+playSound();
+createHeart();
+vibrateBeat();
+
+checkFinal();
+
+}
+
+function msg(t){
+document.getElementById("msg").innerText=t;
+}
+
+function midCaptions(){
+
+if(count==40) msg("Hmm… getting serious now");
+if(count==50) msg("Are you practicing?");
+if(count==60) msg("This is starting to feel real");
+if(count==70) msg("Okay… I'm impressed");
+if(count==80) msg("Still not tired?");
+if(count==90) msg("Almost there… don't mess it up");
+
+if(count==98){
+msg("Wait… something feels too easy 😏");
+fakeDrop();
+}
+
+}
+
+function prankEffect(){
+
+if(Math.random()<0.35){
+count--;
+msg("That one felt fake");
+createFallingKiss();
+shakeScreen();
+}else{
+count++;
+}
+
+}
+
+function fakeDrop(){
+
+setTimeout(()=>{
+count-=2;
+updateUI();
+msg("Oops… lost a couple");
+shakeScreen();
+createFallingKiss();
+},600);
+
+}
+
+function checkFinal(){
+
+if(count==100){
+
+msg("Too easy… prove it");
+
+setTimeout(()=>{
+max=105;
+msg("5 more");
+updateUI();
+},900);
+
+}
+
+if(count>=105){
+
+msg("Okay… now I believe you ❤");
+heartExplosion();
+
+setTimeout(()=>{
+document.body.style.opacity="0";
+document.body.style.transform="scale(1.05)";
+setTimeout(()=>{
+window.location.href="nextpage.html";
+},600);
+},1500);
+
+}
+
+}
+
+function updateUI(){
+
+document.getElementById("kissBtn").innerText=
+"💋 "+count+" / "+max;
+
+document.getElementById("bar").style.width=
+(count/max)*100+"%";
+
+}
+
+function playSound(){
+
+let s=document.getElementById("sound");
+s.currentTime=0;
+s.play();
+
+}
+
+function createHeart(){
+
+let h=document.createElement("div");
+h.innerHTML="❤";
+h.className="heart";
+
+h.style.left=
+(window.innerWidth/2+(Math.random()*120-60))+"px";
+
+h.style.top=
+(window.innerHeight/2)+"px";
+
+document.body.appendChild(h);
+
+setTimeout(()=>h.remove(),1000);
+
+}
+
+function createFallingKiss(){
+
+let k=document.createElement("div");
+k.innerHTML="❤";
+k.className="kissFall";
+
+k.style.left=
+(window.innerWidth/2+(Math.random()*120-60))+"px";
+
+k.style.top=
+(window.innerHeight/2-20)+"px";
+
+document.body.appendChild(k);
+
+setTimeout(()=>k.remove(),1000);
+
+}
+
+function heartExplosion(){
+
+for(let i=0;i<25;i++){
+
+let c=document.createElement("div");
+c.innerHTML="❤";
+c.className="confetti";
+
+c.style.left=
+(window.innerWidth/2+(Math.random()*240-120))+"px";
+
+c.style.top=
+(window.innerHeight/2)+"px";
+
+document.body.appendChild(c);
+
+setTimeout(()=>c.remove(),1400);
+
+}
+
+}
+
+function shakeScreen(){
+
+let s=document.getElementById("screen");
+s.classList.add("shake");
+
+setTimeout(()=>{
+s.classList.remove("shake");
+},300);
+
+}
+
+function vibrateBeat(){
+
+if(navigator.vibrate){
+navigator.vibrate(40);
+}
+
+}
+
+setInterval(()=>{
+
+let idle=(Date.now()-lastClickTime)/1000;
+
+if(idle>1 && count>0){
+count--;
+updateUI();
+createFallingKiss();
+shakeScreen();
+}
+
+},1000);
+
+</script>
+
+</body>
+</html>
