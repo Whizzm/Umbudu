@@ -153,7 +153,8 @@ opacity:0;
 
 <div class="container" id="screen">
 
-<h2>Don't stop kissing</h2>
+<h3>Wait. not so fast</h3>
+<h4> First give me some kisses</h4>
 
 <button onclick="kiss()" id="kissBtn">
 💋 0 / 100
@@ -204,12 +205,9 @@ document.getElementById("msg").innerText=t;
 
 function midCaptions(){
 
-if(count==40) msg("Hmm… getting serious now");
-if(count==50) msg("Are you practicing?");
-if(count==60) msg("This is starting to feel real");
-if(count==70) msg("Okay… I'm impressed");
-if(count==80) msg("Still not tired?");
-if(count==90) msg("Almost there… don't mess it up");
+if(count==50) msg("come on vave, you can do it");
+if(count==80) msg("Aaah dhe ippo theerum");
+if(count==90) msg("Almost there… yess yesss");
 
 if(count==98){
 msg("Wait… something feels too easy 😏");
@@ -236,7 +234,7 @@ function fakeDrop(){
 setTimeout(()=>{
 count-=2;
 updateUI();
-msg("Oops… lost a couple");
+msg("Oops… umma poyi");
 shakeScreen();
 createFallingKiss();
 },600);
@@ -247,7 +245,7 @@ function checkFinal(){
 
 if(count==100){
 
-msg("Too easy… prove it");
+msg("Enthayalum ithraym thannu, oru 5 ennam koode tha");
 
 setTimeout(()=>{
 max=105;
@@ -266,7 +264,7 @@ setTimeout(()=>{
 document.body.style.opacity="0";
 document.body.style.transform="scale(1.05)";
 setTimeout(()=>{
-window.location.href="nextpage.html";
+window.location.href="last page.html";
 },600);
 },1500);
 
